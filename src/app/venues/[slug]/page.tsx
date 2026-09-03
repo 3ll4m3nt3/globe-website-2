@@ -68,23 +68,7 @@ export default async function VenuePage({ params }: VenuePageProps) {
             {venue.summary}
           </p>
 
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
-            <div className="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-4">
-              <p className="text-xs uppercase tracking-[0.25em] text-[var(--muted)]">
-                Latitude
-              </p>
-              <p className="mt-2 text-2xl font-semibold">
-                {venue.coordinates.latitude.toFixed(3)}
-              </p>
-            </div>
-            <div className="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-4">
-              <p className="text-xs uppercase tracking-[0.25em] text-[var(--muted)]">
-                Longitude
-              </p>
-              <p className="mt-2 text-2xl font-semibold">
-                {venue.coordinates.longitude.toFixed(3)}
-              </p>
-            </div>
+          <div className="mt-8 grid gap-4">
             <div className="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-4">
               <p className="text-xs uppercase tracking-[0.25em] text-[var(--muted)]">
                 Gig entries
