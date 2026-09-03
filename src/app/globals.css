@@ -71,41 +71,51 @@ img {
   opacity: 0.7;
 }
 
-.venue-copy > * + * {
+.venue-copy > * + *,
+.about-copy > * + * {
   margin-top: 1rem;
 }
 
 .venue-copy h2,
-.venue-copy h3 {
+.venue-copy h3,
+.about-copy h2,
+.about-copy h3 {
   font-family: var(--font-display), serif;
   line-height: 1.1;
   margin-top: 2rem;
 }
 
-.venue-copy h2 {
+.venue-copy h2,
+.about-copy h2 {
   font-size: clamp(1.8rem, 2vw, 2.4rem);
 }
 
-.venue-copy h3 {
+.venue-copy h3,
+.about-copy h3 {
   font-size: 1.35rem;
 }
 
 .venue-copy p,
-.venue-copy li {
+.venue-copy li,
+.about-copy p,
+.about-copy li {
   color: var(--muted);
   font-size: 1.05rem;
   line-height: 1.8;
 }
 
-.venue-copy ul {
+.venue-copy ul,
+.about-copy ul {
   padding-left: 1.25rem;
 }
 
-.venue-copy strong {
+.venue-copy strong,
+.about-copy strong {
   color: var(--foreground);
 }
 
-.venue-copy a {
+.venue-copy a,
+.about-copy a {
   color: var(--accent);
   text-decoration: underline;
 }

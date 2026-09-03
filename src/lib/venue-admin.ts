@@ -1,10 +1,7 @@
-import { promises as fs } from "node:fs";
-import path from "node:path";
 import matter from "gray-matter";
 import { z } from "zod";
 import type { Venue } from "@/types/venue";
-
-const venuesDirectory = path.join(process.cwd(), "content", "venues");
+import { loadVenueMarkdownRecords, removeVenueMarkdown, writeVenueMarkdown } from "@/lib/venue-storage";
 
 const imageSchema = z.object({
   src: z.string().trim().min(1).default("/venues/default-hero.svg"),
@@ -178,17 +175,11 @@ function normalizeVenueInput(data: Record<string, unknown>, body: string) {
 }
 
 export async function readAllVenueFiles(): Promise<Venue[]> {
-  const entries = await fs.readdir(venuesDirectory, { withFileTypes: true });
-
-  const files = entries
-    .filter((entry) => entry.isFile() && entry.name.endsWith(".md"))
-    .sort((left, right) => left.name.localeCompare(right.name));
+  const records = await loadVenueMarkdownRecords();
 
   const venues = await Promise.all(
-    files.map(async (entry) => {
-      const fullPath = path.join(venuesDirectory, entry.name);
-      const source = await fs.readFile(fullPath, "utf8");
-      const { content, data } = matter(source);
+    records.map(async (record) => {
+      const { content, data } = matter(record.markdown);
       const normalized = normalizeVenueInput(data as Record<string, unknown>, content.trim());
       const result = venueAdminSchema.safeParse(normalized);
 
@@ -207,8 +198,6 @@ export async function readAllVenueFiles(): Promise<Venue[]> {
 
 export async function saveVenue(venue: VenueAdminFormData) {
   const parsed = venueAdminSchema.parse(venue);
-  const fileName = `${parsed.slug}.md`;
-  const fullPath = path.join(venuesDirectory, fileName);
 
   const frontMatter = {
     slug: parsed.slug,
@@ -228,17 +217,13 @@ export async function saveVenue(venue: VenueAdminFormData) {
 
   const body = parsed.body || "";
   const markdown = matter.stringify(body, frontMatter);
-
-  await fs.mkdir(venuesDirectory, { recursive: true });
-  await fs.writeFile(fullPath, markdown, "utf8");
+  await writeVenueMarkdown(parsed.slug, markdown);
 
   return parsed;
 }
 
 export async function deleteVenue(slug: string) {
-  const filePath = path.join(venuesDirectory, `${slug}.md`);
-
-  await fs.rm(filePath, { force: true });
+  await removeVenueMarkdown(slug);
 }
 
 export function buildEmptyVenue(): VenueAdminFormData {

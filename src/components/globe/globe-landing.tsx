@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { VenueGlobe } from "@/components/globe/venue-globe";
 import type { VenueMapItem } from "@/types/venue";
 
@@ -16,20 +17,48 @@ export function GlobeLanding({ venues }: GlobeLandingProps) {
             src="/me.png"
             alt="Portrait"
             className="h-20 w-20 rounded-full border border-white/20 object-cover shadow-[0_0_30px_rgba(255,255,255,0.28)] transition-all duration-700 ease-out sm:h-24 sm:w-24"
+            style={{
+              width: "5rem",
+              height: "5rem",
+              borderRadius: "9999px",
+              objectFit: "cover",
+            }}
           />
         </div>
 
-        <header className="pointer-events-none absolute inset-x-0 top-0 z-10 flex justify-center pt-6 sm:pt-8">
-          <h1
-            className="text-center text-2xl font-black uppercase tracking-[0.25em] text-white/90 sm:text-4xl lg:text-5xl"
-            style={{
-              WebkitTextStroke: "1px rgba(0, 0, 0, 0.65)",
-              textShadow:
-                "0 0 2px rgba(0,0,0,0.95), 0 0 10px rgba(0,0,0,0.75), 0 0 1px rgba(255,255,255,0.8)",
-            }}
-          >
-            SZABO MAN BAND
-          </h1>
+        <header
+          className="pointer-events-none absolute inset-x-0 top-0 z-30 flex justify-center pt-6 sm:pt-8"
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: 0,
+            zIndex: 30,
+            display: "flex",
+            justifyContent: "center",
+            paddingTop: "1.5rem",
+            pointerEvents: "none",
+          }}
+        >
+          <div className="flex flex-col items-center gap-3">
+            <h1
+              className="text-center text-2xl font-black uppercase tracking-[0.25em] text-white/90 sm:text-4xl lg:text-5xl"
+              style={{
+                color: "rgba(255,255,255,0.92)",
+                WebkitTextStroke: "1px rgba(0, 0, 0, 0.65)",
+                textShadow:
+                  "0 0 2px rgba(0,0,0,0.95), 0 0 10px rgba(0,0,0,0.75), 0 0 1px rgba(255,255,255,0.8)",
+              }}
+            >
+              SZABO MAN BAND
+            </h1>
+            <Link
+              href="/about"
+              className="pointer-events-auto rounded-full border border-white/20 bg-slate-950/30 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/80 backdrop-blur-sm transition hover:bg-slate-950/50"
+            >
+              About me
+            </Link>
+          </div>
         </header>
         <div className="absolute inset-0">
           <VenueGlobe venues={venues} />

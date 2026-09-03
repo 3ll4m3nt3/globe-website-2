@@ -1,11 +1,8 @@
 import { cache } from "react";
-import { promises as fs } from "node:fs";
-import path from "node:path";
 import matter from "gray-matter";
 import { z } from "zod";
 import type { Venue, VenueMapItem } from "@/types/venue";
-
-const venuesDirectory = path.join(process.cwd(), "content", "venues");
+import { loadVenueMarkdownRecords } from "@/lib/venue-storage";
 
 const imageSchema = z.object({
   src: z.string().trim().min(1),
@@ -55,17 +52,11 @@ const venueSchema = z.object({
 });
 
 const readVenueFiles = cache(async () => {
-  const entries = await fs.readdir(venuesDirectory, { withFileTypes: true });
-
-  const venueFiles = entries
-    .filter((entry) => entry.isFile() && entry.name.endsWith(".md"))
-    .map((entry) => entry.name);
+  const records = await loadVenueMarkdownRecords();
 
   const venues = await Promise.all(
-    venueFiles.map(async (fileName) => {
-      const fullPath = path.join(venuesDirectory, fileName);
-      const source = await fs.readFile(fullPath, "utf8");
-      const { content, data } = matter(source);
+    records.map(async (record) => {
+      const { content, data } = matter(record.markdown);
       const frontmatter = venueSchema.parse(data);
 
       return {

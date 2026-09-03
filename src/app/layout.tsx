@@ -14,7 +14,7 @@ const bodyFont = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Gig Atlas",
+  title: "SZABO MAN BAND",
   description:
     "An interactive globe for documenting venues, photos, and videos from live performances.",
 };
