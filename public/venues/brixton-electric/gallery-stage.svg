@@ -1,0 +1,8 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#0F1721"/>
+  <path d="M0 92H1200" stroke="#FFF8F0" stroke-opacity="0.2" stroke-width="4"/>
+  <path d="M145 212L367 691H610L400 212H145Z" fill="#CC5A2B"/>
+  <path d="M699 212L920 691H1062L854 212H699Z" fill="#F4A261"/>
+  <path d="M490 212L713 691H864L653 212H490Z" fill="#FFF3E4" fill-opacity="0.84"/>
+  <text x="111" y="795" fill="#FFF8F0" font-family="Arial, sans-serif" font-size="48" letter-spacing="0.18em">STAGE LIGHTS / LINE CHECK / ROOM TONE</text>
+</svg>

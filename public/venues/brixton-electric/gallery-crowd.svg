@@ -1,0 +1,7 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#19130F"/>
+  <circle cx="851" cy="212" r="209" fill="#CC5A2B" fill-opacity="0.78"/>
+  <path d="M0 665C99 610 198 583 297 583C396 583 495 614 594 676C693 738 792 769 891 769C990 769 1093 740 1200 682V900H0V665Z" fill="#F4A261"/>
+  <path d="M0 731C89 674 180 646 274 646C368 646 470 685 579 764C688 843 782 882 862 882C942 882 1055 839 1200 752V900H0V731Z" fill="#FFF3E4" fill-opacity="0.88"/>
+  <text x="116" y="171" fill="#FFF8F0" font-family="Georgia, serif" font-size="78" font-weight="700">Balcony chorus, second encore</text>
+</svg>

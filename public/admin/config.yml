@@ -1,0 +1,117 @@
+# Replace the backend before production publishing.
+# `test-repo` is enough to scaffold the editorial UI while the repository host is still undecided.
+local_backend: true
+
+backend:
+  name: test-repo
+
+media_folder: public/uploads
+public_folder: /uploads
+
+collections:
+  - name: venues
+    label: Venues
+    label_singular: Venue
+    folder: content/venues
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    identifier_field: slug
+    summary: "{{name}} - {{city}}, {{country}}"
+    fields:
+      - label: Slug
+        name: slug
+        widget: string
+        hint: Used in the venue URL.
+      - label: Venue Name
+        name: name
+        widget: string
+      - label: City
+        name: city
+        widget: string
+      - label: Country
+        name: country
+        widget: string
+      - label: Summary
+        name: summary
+        widget: text
+      - label: Coordinates
+        name: coordinates
+        widget: object
+        fields:
+          - label: Latitude
+            name: latitude
+            widget: number
+            value_type: float
+          - label: Longitude
+            name: longitude
+            widget: number
+            value_type: float
+      - label: Hero Image
+        name: heroImage
+        widget: object
+        fields:
+          - label: Source
+            name: src
+            widget: image
+          - label: Alt Text
+            name: alt
+            widget: string
+          - label: Width
+            name: width
+            widget: number
+            value_type: int
+          - label: Height
+            name: height
+            widget: number
+            value_type: int
+      - label: Gallery
+        name: gallery
+        widget: list
+        fields:
+          - label: Source
+            name: src
+            widget: image
+          - label: Alt Text
+            name: alt
+            widget: string
+          - label: Width
+            name: width
+            widget: number
+            value_type: int
+          - label: Height
+            name: height
+            widget: number
+            value_type: int
+      - label: Videos
+        name: videos
+        widget: list
+        required: false
+        fields:
+          - label: Title
+            name: title
+            widget: string
+          - label: Embed URL
+            name: embedUrl
+            widget: string
+          - label: Caption
+            name: caption
+            widget: text
+      - label: Gigs
+        name: gigs
+        widget: list
+        required: false
+        fields:
+          - label: Date
+            name: date
+            widget: string
+          - label: Title
+            name: title
+            widget: string
+          - label: Note
+            name: note
+            widget: text
+      - label: Body
+        name: body
+        widget: markdown

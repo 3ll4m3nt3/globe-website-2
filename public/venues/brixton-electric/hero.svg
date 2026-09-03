@@ -1,0 +1,10 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" fill="#10161F"/>
+  <circle cx="1238" cy="227" r="283" fill="#CC5A2B" fill-opacity="0.86"/>
+  <circle cx="469" cy="829" r="359" fill="#284D75" fill-opacity="0.95"/>
+  <path d="M204 681C355 511 503 426 647 426C791 426 968 502 1179 654" stroke="#FFF5EA" stroke-width="22" stroke-linecap="round"/>
+  <path d="M315 560L449 417L625 488L813 319L1000 418L1172 247L1324 379" stroke="#F4A261" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="178" y="149" width="365" height="129" rx="24" fill="#FFF8F0" fill-opacity="0.92"/>
+  <text x="226" y="221" fill="#10161F" font-family="Georgia, serif" font-size="72" font-weight="700">Brixton Electric</text>
+  <text x="225" y="851" fill="#FFF8F0" font-family="Arial, sans-serif" font-size="46" letter-spacing="0.28em">GIG ATLAS ARCHIVE</text>
+</svg>

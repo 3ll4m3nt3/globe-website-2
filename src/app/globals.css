@@ -1,0 +1,111 @@
+@import "tailwindcss";
+@import "cesium/Build/Cesium/Widgets/widgets.css";
+
+:root {
+  --background: #0b1117;
+  --foreground: #edf3ff;
+  --surface: rgba(16, 23, 31, 0.84);
+  --surface-strong: rgba(12, 18, 25, 0.96);
+  --accent: #5ea6ff;
+  --accent-soft: #8bb9ff;
+  --line: rgba(142, 169, 203, 0.18);
+  --muted: #a7b7c9;
+  --shadow: 0 24px 80px rgba(2, 6, 12, 0.48);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-body);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background:
+    radial-gradient(circle at top, rgba(94, 166, 255, 0.22), transparent 34%),
+    radial-gradient(circle at bottom left, rgba(30, 84, 160, 0.18), transparent 30%),
+    var(--background);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.globe-shell .cesium-viewer,
+.globe-shell .cesium-widget,
+.globe-shell canvas {
+  border-radius: 2rem;
+}
+
+.globe-shell .cesium-viewer {
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+}
+
+.globe-shell .cesium-viewer-bottom {
+  left: 1rem;
+  right: auto;
+  bottom: 1rem;
+}
+
+.globe-shell .cesium-credit-textContainer,
+.globe-shell .cesium-credit-expand-link {
+  font-size: 0.62rem;
+  opacity: 0.7;
+}
+
+.venue-copy > * + * {
+  margin-top: 1rem;
+}
+
+.venue-copy h2,
+.venue-copy h3 {
+  font-family: var(--font-display), serif;
+  line-height: 1.1;
+  margin-top: 2rem;
+}
+
+.venue-copy h2 {
+  font-size: clamp(1.8rem, 2vw, 2.4rem);
+}
+
+.venue-copy h3 {
+  font-size: 1.35rem;
+}
+
+.venue-copy p,
+.venue-copy li {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.venue-copy ul {
+  padding-left: 1.25rem;
+}
+
+.venue-copy strong {
+  color: var(--foreground);
+}
+
+.venue-copy a {
+  color: var(--accent);
+  text-decoration: underline;
+}
