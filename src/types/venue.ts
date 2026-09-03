@@ -8,6 +8,8 @@ export type VenueImage = {
 export type VenueVideo = {
   title: string;
   embedUrl: string;
+  source: string;
+  poster: string;
   caption: string;
 };
 

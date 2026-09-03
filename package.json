@@ -11,6 +11,7 @@
     "postinstall": "npm run copy:cesium"
   },
   "dependencies": {
+    "@vercel/blob": "^2.8.0",
     "cesium": "^1.145.0",
     "decap-cms-app": "^3.16.0",
     "gray-matter": "^4.0.3",

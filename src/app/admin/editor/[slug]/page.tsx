@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import VenueMediaFields from "@/components/admin/venue-media-fields";
 import { requireAdmin } from "@/lib/admin-auth";
 import {
   buildEmptyVenue,
@@ -15,6 +16,18 @@ import {
 const toNumber = (value: FormDataEntryValue | null, fallback: number) => {
   const numericValue = Number(value ?? fallback);
   return Number.isFinite(numericValue) ? numericValue : fallback;
+};
+
+const parseJsonField = (value: FormDataEntryValue | null, fallback: unknown) => {
+  if (typeof value !== "string" || !value.trim()) {
+    return fallback;
+  }
+
+  try {
+    return JSON.parse(value);
+  } catch {
+    return fallback;
+  }
 };
 
 export default async function AdminVenueEditorPage({
@@ -48,6 +61,14 @@ export default async function AdminVenueEditorPage({
       latitudeInput,
       longitudeInput,
     );
+    const heroImage = parseJsonField(formData.get("heroImageJson"), {
+      src: "/venues/default-hero.svg",
+      alt: "",
+      width: 1600,
+      height: 1000,
+    });
+    const gallery = parseJsonField(formData.get("galleryJson"), []);
+    const videos = parseJsonField(formData.get("videosJson"), []);
 
     const parsedForm = {
       slug: sanitizeSlug(rawSlug) || rawSlug,
@@ -56,14 +77,9 @@ export default async function AdminVenueEditorPage({
       country: String(formData.get("country") ?? "").trim(),
       summary: String(formData.get("summary") ?? "").trim(),
       coordinates,
-      heroImage: {
-        src: (String(formData.get("heroSrc") ?? "/venues/default-hero.svg").trim() || "/venues/default-hero.svg"),
-        alt: String(formData.get("heroAlt") ?? "").trim(),
-        width: toNumber(formData.get("heroWidth"), 1600),
-        height: toNumber(formData.get("heroHeight"), 1000),
-      },
-      gallery: [],
-      videos: [],
+      heroImage,
+      gallery,
+      videos,
       gigs: [],
       body: String(formData.get("body") ?? "").trim(),
     };
@@ -247,50 +263,12 @@ export default async function AdminVenueEditorPage({
           </div>
         </div>
 
-        <div className="rounded-[1.5rem] border border-[var(--line)] bg-[var(--surface-strong)] p-5">
-          <p className="text-xs uppercase tracking-[0.25em] text-[var(--accent)]">Hero image</p>
-          <div className="mt-4 grid gap-5 md:grid-cols-2">
-            <label className="space-y-2 text-sm font-medium text-[var(--muted)]">
-              <span>Image path</span>
-              <input
-                name="heroSrc"
-                defaultValue={currentVenue.heroImage.src}
-                className="w-full rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-base text-[var(--foreground)] outline-none focus:border-[var(--accent)]"
-                placeholder="/venues/venue/hero.jpg"
-              />
-            </label>
-
-            <label className="space-y-2 text-sm font-medium text-[var(--muted)]">
-              <span>Alt text</span>
-              <input
-                name="heroAlt"
-                defaultValue={currentVenue.heroImage.alt}
-                className="w-full rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-base text-[var(--foreground)] outline-none focus:border-[var(--accent)]"
-                placeholder="Venue entrance at sunset"
-              />
-            </label>
-
-            <label className="space-y-2 text-sm font-medium text-[var(--muted)]">
-              <span>Width</span>
-              <input
-                name="heroWidth"
-                type="number"
-                defaultValue={currentVenue.heroImage.width}
-                className="w-full rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-base text-[var(--foreground)] outline-none focus:border-[var(--accent)]"
-              />
-            </label>
-
-            <label className="space-y-2 text-sm font-medium text-[var(--muted)]">
-              <span>Height</span>
-              <input
-                name="heroHeight"
-                type="number"
-                defaultValue={currentVenue.heroImage.height}
-                className="w-full rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-base text-[var(--foreground)] outline-none focus:border-[var(--accent)]"
-              />
-            </label>
-          </div>
-        </div>
+        <VenueMediaFields
+          initialSlug={currentVenue.slug || slug}
+          initialHeroImage={currentVenue.heroImage}
+          initialGallery={currentVenue.gallery}
+          initialVideos={currentVenue.videos}
+        />
 
         <div className="rounded-[1.5rem] border border-[var(--line)] bg-[var(--surface-strong)] p-5">
           <p className="text-xs uppercase tracking-[0.25em] text-[var(--accent)]">Venue notes</p>

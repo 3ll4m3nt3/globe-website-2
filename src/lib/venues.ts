@@ -16,8 +16,12 @@ const imageSchema = z.object({
 
 const videoSchema = z.object({
   title: z.string().min(1),
-  embedUrl: z.url(),
+  embedUrl: z.string().trim().default(""),
+  source: z.string().trim().default(""),
+  poster: z.string().trim().default(""),
   caption: z.string().min(1),
+}).refine((video) => video.embedUrl.length > 0 || video.source.length > 0, {
+  message: "Each video needs either an embed URL or a source path.",
 });
 
 const dateStringSchema = z.preprocess((value) => {

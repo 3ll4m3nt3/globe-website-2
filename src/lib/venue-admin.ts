@@ -15,8 +15,12 @@ const imageSchema = z.object({
 
 const videoSchema = z.object({
   title: z.string().min(1),
-  embedUrl: z.string().min(1),
+  embedUrl: z.string().trim().default(""),
+  source: z.string().trim().default(""),
+  poster: z.string().trim().default(""),
   caption: z.string().min(1),
+}).refine((video) => video.embedUrl.length > 0 || video.source.length > 0, {
+  message: "Each video needs either an embed URL or a source path.",
 });
 
 const gigSchema = z.object({
@@ -160,6 +164,8 @@ function normalizeVenueInput(data: Record<string, unknown>, body: string) {
     videos: Array.isArray(data.videos) ? data.videos.map((video) => ({
       title: typeof video === "object" && video !== null && typeof (video as Record<string, unknown>).title === "string" ? String((video as Record<string, unknown>).title) : "",
       embedUrl: typeof video === "object" && video !== null && typeof (video as Record<string, unknown>).embedUrl === "string" ? String((video as Record<string, unknown>).embedUrl) : "",
+      source: typeof video === "object" && video !== null && typeof (video as Record<string, unknown>).source === "string" ? String((video as Record<string, unknown>).source) : "",
+      poster: typeof video === "object" && video !== null && typeof (video as Record<string, unknown>).poster === "string" ? String((video as Record<string, unknown>).poster) : "",
       caption: typeof video === "object" && video !== null && typeof (video as Record<string, unknown>).caption === "string" ? String((video as Record<string, unknown>).caption) : "",
     })) : [],
     gigs: Array.isArray(data.gigs) ? data.gigs.map((gig) => ({

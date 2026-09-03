@@ -182,27 +182,46 @@ export default async function VenuePage({ params }: VenuePageProps) {
             Videos
           </p>
           <div className="mt-6 grid gap-6 xl:grid-cols-2">
-            {venue.videos.map((video) => (
-              <article key={video.embedUrl} className="space-y-3">
-                <div className="overflow-hidden rounded-[1.5rem] border border-[var(--line)] bg-black">
-                  <iframe
-                    src={video.embedUrl}
-                    title={video.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                    className="aspect-video w-full"
-                  />
-                </div>
-                <div>
-                  <h3 className="font-[family-name:var(--font-display)] text-2xl leading-tight">
-                    {video.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
-                    {video.caption}
-                  </p>
-                </div>
-              </article>
-            ))}
+            {venue.videos.map((video, index) => {
+              const hasSource = video.source.trim().length > 0;
+              const hasEmbed = video.embedUrl.trim().length > 0;
+
+              if (!hasSource && !hasEmbed) {
+                return null;
+              }
+
+              return (
+                <article key={`${video.title}-${index}`} className="space-y-3">
+                  <div className="overflow-hidden rounded-[1.5rem] border border-[var(--line)] bg-black">
+                    {hasSource ? (
+                      <video
+                        src={video.source}
+                        poster={video.poster || undefined}
+                        controls
+                        preload="metadata"
+                        className="aspect-video w-full"
+                      />
+                    ) : (
+                      <iframe
+                        src={video.embedUrl}
+                        title={video.title}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                        className="aspect-video w-full"
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="font-[family-name:var(--font-display)] text-2xl leading-tight">
+                      {video.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
+                      {video.caption}
+                    </p>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
 

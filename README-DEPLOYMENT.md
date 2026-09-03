@@ -45,6 +45,18 @@ then this is complete.
 
 After this, production is linked to your GitHub repository.
 
+### D) Configure admin secrets and Blob storage
+
+1. In Vercel, open your project and go to **Storage**.
+2. Create a **Blob** store (or connect an existing one).
+3. In **Project Settings -> Environment Variables**, add:
+	- `ADMIN_PASSWORD` (used by the admin login page)
+	- `BLOB_READ_WRITE_TOKEN` (from your Vercel Blob store)
+4. Apply these variables to **Preview** and **Production**.
+5. Redeploy after adding variables.
+
+Without `BLOB_READ_WRITE_TOKEN`, media uploads from `/admin/editor/[slug]` will fail.
+
 ---
 
 ## 2) Daily update workflow (quick path)
