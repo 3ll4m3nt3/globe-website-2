@@ -115,6 +115,7 @@ export async function saveAboutContent(nextContent: AboutContent) {
   if (shouldUseBlobForWrites()) {
     await put(aboutBlobPrefix, markdown, {
       access: "public",
+      allowOverwrite: true,
       addRandomSuffix: false,
       contentType: "text/markdown; charset=utf-8",
       token: getBlobToken(),

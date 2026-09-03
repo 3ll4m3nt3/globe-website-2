@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import VenueMediaFields from "@/components/admin/venue-media-fields";
 import { requireAdmin } from "@/lib/admin-auth";
@@ -88,6 +89,11 @@ export default async function AdminVenueEditorPage({
       const normalized = venueAdminSchema.parse(parsedForm);
       await saveVenue(normalized);
 
+      revalidatePath("/");
+      revalidatePath("/admin/editor");
+      revalidatePath(`/admin/editor/${normalized.slug}`);
+      revalidatePath(`/venues/${normalized.slug}`);
+
       if (mode === "view") {
         redirect(`/venues/${normalized.slug}`);
       }
@@ -115,6 +121,9 @@ export default async function AdminVenueEditorPage({
 
     if (!isNew && currentVenue.slug) {
       await deleteVenue(currentVenue.slug);
+      revalidatePath("/");
+      revalidatePath("/admin/editor");
+      revalidatePath(`/venues/${currentVenue.slug}`);
     }
 
     redirect("/admin/editor");

@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import { getAllVenues, getVenueBySlug, getVenueSlugs } from "@/lib/venues";
 
+export const dynamicParams = true;
+
 type VenuePageProps = {
   params: Promise<{
     slug: string;

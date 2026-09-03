@@ -97,6 +97,7 @@ export async function POST(request: Request) {
       access: "public",
       token: process.env.BLOB_READ_WRITE_TOKEN,
       contentType: fileType,
+      allowOverwrite: true,
       addRandomSuffix: false,
     });
 

@@ -138,6 +138,7 @@ export async function writeVenueMarkdown(slug: string, markdown: string) {
   if (shouldUseBlobForWrites()) {
     await put(`${venueBlobPrefix}${slug}.md`, markdown, {
       access: "public",
+      allowOverwrite: true,
       addRandomSuffix: false,
       contentType: "text/markdown; charset=utf-8",
       token: getBlobToken(),
