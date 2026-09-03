@@ -194,6 +194,12 @@ npm run build
 2. Confirm latest deployment succeeded in Vercel
 3. Roll back using Option 1 above if needed
 
+### Chunk file missing after deploy (`Loading chunk ... failed`)
+
+1. Hard-refresh the page once (`Ctrl+Shift+R`) to clear stale chunk references.
+2. In Vercel, open the latest deployment and confirm all static files were uploaded.
+3. Redeploy the same commit with **Use existing Build Cache** turned off if the error persists.
+
 ### Accidental push to main
 
 Use `git revert` and push the revert commit.
