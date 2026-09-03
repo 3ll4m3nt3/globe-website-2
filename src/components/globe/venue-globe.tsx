@@ -30,9 +30,14 @@ export function VenueGlobe({ venues }: VenueGlobeProps) {
       }
 
       try {
-        (window as CesiumWindow).CESIUM_BASE_URL = "/Cesium/";
+        const cesiumBaseUrl = "/Cesium/";
+        (window as CesiumWindow).CESIUM_BASE_URL = cesiumBaseUrl;
 
         const Cesium = await import("cesium");
+        const buildModuleUrl = Cesium.buildModuleUrl as typeof Cesium.buildModuleUrl & {
+          setBaseUrl?: (value: string) => void;
+        };
+        buildModuleUrl.setBaseUrl?.(cesiumBaseUrl);
 
         if (!isActive || !containerRef.current) {
           return;
