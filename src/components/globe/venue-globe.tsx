@@ -4,13 +4,70 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { VenueMapItem } from "@/types/venue";
 
+type CesiumModule = typeof import("cesium");
+
 type VenueGlobeProps = {
   venues: VenueMapItem[];
 };
 
 type CesiumWindow = Window & {
   CESIUM_BASE_URL?: string;
+  Cesium?: CesiumModule;
+  __cesiumLoaderPromise?: Promise<CesiumModule>;
 };
+
+async function loadCesiumFromPublic(
+  cesiumBaseUrl: string
+): Promise<CesiumModule> {
+  const cesiumWindow = window as CesiumWindow;
+  if (cesiumWindow.Cesium) {
+    return cesiumWindow.Cesium;
+  }
+
+  if (!cesiumWindow.__cesiumLoaderPromise) {
+    cesiumWindow.__cesiumLoaderPromise = new Promise((resolve, reject) => {
+      const existing = document.querySelector(
+        'script[data-cesium-runtime="1"]'
+      ) as HTMLScriptElement | null;
+
+      const onReady = () => {
+        if (cesiumWindow.Cesium) {
+          resolve(cesiumWindow.Cesium);
+          return;
+        }
+        reject(new Error("Cesium script loaded but window.Cesium is unavailable."));
+      };
+
+      if (existing) {
+        if (cesiumWindow.Cesium) {
+          onReady();
+          return;
+        }
+        existing.addEventListener("load", onReady, { once: true });
+        existing.addEventListener(
+          "error",
+          () => reject(new Error(`Failed to load Cesium script from ${existing.src}`)),
+          { once: true }
+        );
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = `${cesiumBaseUrl}Cesium.js`;
+      script.async = true;
+      script.dataset.cesiumRuntime = "1";
+      script.addEventListener("load", onReady, { once: true });
+      script.addEventListener(
+        "error",
+        () => reject(new Error(`Failed to load Cesium script from ${script.src}`)),
+        { once: true }
+      );
+      document.head.appendChild(script);
+    });
+  }
+
+  return cesiumWindow.__cesiumLoaderPromise;
+}
 
 export function VenueGlobe({ venues }: VenueGlobeProps) {
   const router = useRouter();
@@ -47,7 +104,7 @@ export function VenueGlobe({ venues }: VenueGlobeProps) {
 
         (window as CesiumWindow).CESIUM_BASE_URL = cesiumBaseUrl;
 
-        const Cesium = await import("cesium");
+        const Cesium = await loadCesiumFromPublic(cesiumBaseUrl);
         const buildModuleUrl = Cesium.buildModuleUrl as typeof Cesium.buildModuleUrl & {
           setBaseUrl?: (value: string) => void;
         };
