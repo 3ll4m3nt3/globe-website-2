@@ -180,6 +180,14 @@ npm ci
 npm run build
 ```
 
+4. If Cesium globe loads locally but fails on Vercel, add `NEXT_PUBLIC_ASSET_PREFIX` in Vercel Environment Variables only when you use an asset/CDN prefix. Leave it empty for normal root deployments.
+
+5. After deploy, verify these URLs return 200 on your production domain:
+- `/Cesium/Workers/createTaskProcessorWorker.js`
+- `/Cesium/Assets/approximateTerrainHeights.json`
+
+6. If production shows `Octal escape sequences are not allowed in template strings` from a `/_next/static/...` chunk, force webpack builds for Cesium compatibility (`next build --webpack`).
+
 ### Wrong content on production
 
 1. Confirm commit reached main on GitHub

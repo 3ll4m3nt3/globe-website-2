@@ -18,6 +18,7 @@ export function VenueGlobe({ venues }: VenueGlobeProps) {
   const [status, setStatus] = useState<"loading" | "ready" | "error">(
     "loading"
   );
+  const [errorDetails, setErrorDetails] = useState<string>("");
   const [isZoomedIn, setIsZoomedIn] = useState(false);
 
   useEffect(() => {
@@ -30,7 +31,20 @@ export function VenueGlobe({ venues }: VenueGlobeProps) {
       }
 
       try {
-        const cesiumBaseUrl = "/Cesium/";
+        const assetPrefix =
+          process.env.NEXT_PUBLIC_ASSET_PREFIX?.replace(/\/$/, "") ?? "";
+        const cesiumBaseUrl = `${assetPrefix}/Cesium/`;
+
+        const workerProbe = await fetch(
+          `${cesiumBaseUrl}Workers/createTaskProcessorWorker.js`,
+          { method: "HEAD" }
+        );
+        if (!workerProbe.ok) {
+          throw new Error(
+            `Cesium worker assets are unavailable at ${cesiumBaseUrl} (status ${workerProbe.status}).`
+          );
+        }
+
         (window as CesiumWindow).CESIUM_BASE_URL = cesiumBaseUrl;
 
         const Cesium = await import("cesium");
@@ -148,6 +162,9 @@ export function VenueGlobe({ venues }: VenueGlobeProps) {
       } catch (error) {
         console.error("Failed to initialize Cesium globe", error);
         if (isActive) {
+          const message =
+            error instanceof Error ? error.message : "Unknown Cesium startup error";
+          setErrorDetails(message);
           setStatus("error");
         }
       }
@@ -178,7 +195,10 @@ export function VenueGlobe({ venues }: VenueGlobeProps) {
       </div>
       {status === "error" ? (
         <div className="absolute inset-5 flex items-center justify-center rounded-[1.5rem] border border-white/10 bg-slate-950/80 p-6 text-center text-sm leading-6 text-white/80">
-          Globe rendering could not start in this browser session. The venue archive remains available from the individual venue pages.
+          <p>
+            Globe rendering could not start in this browser session. The venue archive remains available from the individual venue pages.
+            {errorDetails ? <span className="mt-2 block text-white/65">{errorDetails}</span> : null}
+          </p>
         </div>
       ) : null}
     </div>
